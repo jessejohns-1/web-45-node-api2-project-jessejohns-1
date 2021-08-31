@@ -34,29 +34,44 @@ router.get('/:id', (req, res) => {
 })
  
 
-router.post('/posts'), (req, res) => {
-    const {title,contents} = req.body
-    if(!title || !contents){
-        res.status(400).json({ message: "Please provide title and contents for the post"})
-    }else{
-        Posts.insert({title,contents})
-        .then(({ id }) =>{return Posts.findById(id)})
-        .then(post =>{ res.status(201).json(post)})
+router.post('/', (req, res) => {
+const {title,contents} = req.body
+if(!title || !contents){
+    res.status(400).json({ message: "Please provide title and contents for the post"})
+}else{
+    Posts.insert({title,contents})
+    .then(({ id }) =>{  return Posts.findById(id)
+    })
+        .then(posts =>{
+            res.status(201).json(posts)
+        })
         .catch(err=>{ console.log(err)
             res.status(500).json({ message: "There was an error while saving the post to the database"})
         })
 
-}}
+}})
 
-
-module.exports = router
-
-
-
-
-
-
-
+router.put("/:id", (req, res) => {
+    
+    const {title, contents} = req.body;
+    if (!title || !contents) {
+        res.status(400).json({message: "Please provide title and contents for the post"})}
+    else{
+        Posts.findById(req.params.id)
+            .then(posts => {
+                if(!posts){
+                    res.status(404).json({message: "The post with the specified ID does not exist"})
+                }
+                else{return Posts.update(req.params.id, req.body)}
+            })
+            .then(postData => {if(postData) { return Posts.findById(req.params.id, req.body)}})
+            .then(morePostData => {if(morePostData) {res.json(morePostData)}})
+            .catch(error => {
+                console.log(error)
+                res.status(500).json({message: "The post information could not be retrieved"})
+            })
+    }
+})
 
 
 
