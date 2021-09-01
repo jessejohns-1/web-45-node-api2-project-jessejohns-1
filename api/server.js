@@ -1,23 +1,20 @@
-// implement your server here
-const express = require('express')
+const express = require("express");
 
-// require your posts router and connect it here
-const PostsRouter = require('./posts/posts-router')
+const PostsRouter = require("./posts/posts-router");
 
-const server = express()
+const server = express();
 
-server.use(express.json())
+server.use(express.json());
 
-server.use('/api/posts', PostsRouter)
+server.use("/api/posts", PostsRouter);
 
 server.get("/", (req, res) => {
-    res.send(`
+  res.send(`
     
-    <h2>Hi i'm tom</h2> 
+    <h2>Hi i'm the server and i contain everything you need!</h2> 
     <p>I like jazz music</p>
     
-    `)
-})
+    `);
+});
 
-
-module.exports = server
+module.exports = server;
