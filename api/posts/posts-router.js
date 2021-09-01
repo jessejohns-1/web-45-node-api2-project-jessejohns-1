@@ -73,7 +73,7 @@ router.put("/:id", (req, res) => {
     }
 })
 
-
+router.delete("")
 
 
 module.exports = router
